@@ -1,17 +1,21 @@
-import path from "path";
-import { fileURLToPath } from "url";
-// configure path
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-import dotenv from "dotenv";
-dotenv.config({ path: path.resolve(__dirname, "./config.env") });
-
-// spin server
 import app from "./app.js";
-const port = process.env.PORT ?? 3000;
+import quizz_db from "./configs/database/dbConfig.js";
+quizz_db
+  .authenticate()
+  .then(() => {
+    console.log(
+      `DB Connected : ${process.env.NODE_ENV} : ${JSON.stringify(
+        quizz_db.config.database
+      )}`
+    );
+  })
+  .catch((error) => {
+    console.log(`DB Disconnected : ${error}`);
+  });
+
+const port = process.env.PORT;
 app.listen(port, () => {
   console.log(`Quizz on port : ${port}`);
 });
-
+sss;
 // database connection
