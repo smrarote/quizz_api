@@ -1,21 +1,18 @@
 import app from "./app.js";
 import quizz_db from "./configs/database/dbConfig.js";
+import winLogger from "./utils/winston.config.js";
+// database connection
+
 quizz_db
   .authenticate()
   .then(() => {
-    console.log(
-      `DB Connected : ${process.env.NODE_ENV} : ${JSON.stringify(
-        quizz_db.config.database
-      )}`
-    );
+    winLogger.info(`DB CONNECTED : ${quizz_db.config.database}`);
   })
   .catch((error) => {
-    console.log(`DB Disconnected : ${error}`);
+    winLogger.error(`DB DISCONNECTED : ${error}`);
   });
 
 const port = process.env.PORT;
 app.listen(port, () => {
-  console.log(`Quizz on port : ${port}`);
+  winLogger.info(`QUIZZ : ${port}`);
 });
-sss;
-// database connection

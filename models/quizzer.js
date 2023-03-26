@@ -6,31 +6,29 @@ const Quizzer = quizz_db.define(
   "Quizzer",
   {
     id: {
-      type: sequelize.INTEGER,
+      type: sequelize.INTEGER(30),
       autoIncrement: true,
       allowNull: false,
       primaryKey: true,
     },
     firstName: {
-      type: sequelize.STRING,
+      type: sequelize.STRING(50),
       allowNull: false,
       validate: {
         notEmpty: {
-          msg: "Please provide a first name",
+          msg: "Error : provide first name",
+        },
+        isAlpha: {
+          msg: "Error : only characters allowed",
         },
       },
     },
     lastName: {
-      type: sequelize.STRING,
+      type: sequelize.STRING(50),
       allowNull: true,
-      validate: {
-        notEmpty: {
-          msg: "Please provide a last name",
-        },
-      },
     },
     email: {
-      type: sequelize.STRING,
+      type: sequelize.STRING(100),
       allowNull: false,
       unique: true,
       validate: {
@@ -38,20 +36,21 @@ const Quizzer = quizz_db.define(
       },
     },
     displayName: {
-      type: sequelize.STRING,
+      type: sequelize.STRING(50),
       allowNull: true,
-      validate: {
-        notEmpty: {
-          msg: "Please provide a display name",
-        },
-      },
     },
     password: {
-      type: sequelize.STRING,
+      type: sequelize.STRING(100),
       allowNull: false,
+      isAlpha: true,
       validate: {
-        len: [6, 50],
-        notEmpty: true,
+        len: {
+          args: [6, 50],
+          msg: "password length min : 6, max : 50",
+        },
+        notEmpty: {
+          msg: "required : password",
+        },
       },
     },
     createdAt: {
@@ -63,10 +62,13 @@ const Quizzer = quizz_db.define(
       type: sequelize.DATE,
       allowNull: false,
       defaultValue: sequelize.literal("CURRENT_TIMESTAMP"),
+      onUpdate: sequelize.literal("CURRENT_TIMESTAMP"),
     },
   },
   {
     tableName: dbTables.QUIZZER_TABLE,
+    paranoid: true,
+    engine: "innoDB",
   }
 );
 export default Quizzer;

@@ -8,7 +8,8 @@
     "build": "cross-env NODE_ENV=prod node server.js",
     "dev": "cross-env NODE_ENV=dev nodemon server.js",
     "debug": "ndb nodemon server.js",
-    "test": "cross-env NODE_ENV=test  mocha"
+    "test": "cross-env NODE_ENV=test  mocha",
+    "doc": "jsdocs -c jsodc.json"
   },
   "repository": {
     "type": "git",
@@ -26,14 +27,18 @@
     "express": "^4.18.2",
     "helmet": "^6.0.1",
     "mariadb": "^3.1.1",
+    "moment": "^2.29.4",
     "mysql2": "^3.2.0",
     "nodemon": "^2.0.20",
     "path": "^0.12.7",
     "pg": "^8.9.0",
-    "sequelize": "^6.29.3"
+    "sequelize": "^6.29.3",
+    "winston": "^3.8.2",
+    "winston-daily-rotate-file": "^4.7.1"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
+    "jsdocs": "^1.0.0",
     "morgan": "^1.10.0"
   }
 }
