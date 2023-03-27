@@ -32,7 +32,7 @@ coverage
 # Bower dependency directory (https://bower.io/)
 bower_components
 
-# node-waf configuration
+# node-waf configurationdocumentation
 .lock-wscript
 
 # Compiled binary addons (https://nodejs.org/api/addons.html)
@@ -40,6 +40,7 @@ build/Release
 
 # Dependency directories
 node_modules/
+documentation/
 jspm_packages/
 
 # TypeScript v1 declaration files
@@ -72,6 +73,8 @@ typings/
 # dotenv environment variables file
 .env.test
 config.env
+.babelrc
+jsdoc.json
 # parcel-bundler cache (https://parceljs.org/)
 .cache
 
