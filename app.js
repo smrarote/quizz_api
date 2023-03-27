@@ -13,7 +13,11 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 global.__basedir = __dirname;
 import * as dotenv from "dotenv";
-dotenv.config({ path: path.join(global.__basedir, "config.env") });
+if (process.env.NODE_ENV === "dev") {
+  dotenv.config({ path: path.join(global.__basedir, "dev.env") });
+} else {
+  dotenv.config({ path: path.join(global.__basedir, "prod.env") });
+}
 
 const app = express();
 

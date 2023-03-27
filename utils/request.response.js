@@ -38,7 +38,7 @@ const error = (msg, statusCode, next) => {
  * @returns {Object} response object
  */
 const response = (res, statusCode, msg, data) => {
-  return res.status(res).json({
+  return res.status(statusCode).json({
     statusCode: statusCode,
     success: true,
     msg: msg,
