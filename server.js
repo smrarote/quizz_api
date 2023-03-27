@@ -1,17 +1,18 @@
-import path from "path";
-import { fileURLToPath } from "url";
-// configure path
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-import dotenv from "dotenv";
-dotenv.config({ path: path.resolve(__dirname, "./config.env") });
-
-// spin server
 import app from "./app.js";
-const port = process.env.PORT ?? 3000;
-app.listen(port, () => {
-  console.log(`Quizz on port : ${port}`);
-});
-
+import quizz_db from "./configs/database/dbConfig.js";
+import winLogger from "./utils/winston.config.js";
 // database connection
+
+quizz_db
+  .authenticate()
+  .then(() => {
+    winLogger.info(`DB CONNECTED : ${quizz_db.config.database}`);
+  })
+  .catch((error) => {
+    winLogger.error(`DB DISCONNECTED : ${error}`);
+  });
+
+const port = process.env.PORT;
+app.listen(port, () => {
+  winLogger.info(`QUIZZ : ${port}`);
+});
