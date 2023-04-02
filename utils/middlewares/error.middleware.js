@@ -1,4 +1,4 @@
-import winLogger from "../winston.config.js";
+const winLogger = require("../winston.config");
 const errorHandler = (err, req, res, next) => {
   const errStatus = err.statusCode || 500;
   const errMsg = err.message || "Something went wrong";
@@ -15,4 +15,4 @@ const errorHandler = (err, req, res, next) => {
   });
 };
 
-export default errorHandler;
+module.exports = errorHandler;

@@ -72,6 +72,8 @@ typings/
 
 # dotenv environment variables file
 .env.test
+prod.env
+dev.env
 config.env
 .babelrc
 jsdoc.json

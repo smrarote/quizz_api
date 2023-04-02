@@ -1,4 +1,4 @@
-import sequelize from "sequelize";
+const sequelize = require("sequelize");
 let db_port = process.env.DB_PORT;
 let db_host = process.env.DB_HOST;
 let db_name = process.env.DB_NAME;
@@ -17,4 +17,4 @@ const quizz_db = new sequelize(db_name, db_user, db_pass, {
   },
 });
 
-export default quizz_db;
+module.exports = quizz_db;

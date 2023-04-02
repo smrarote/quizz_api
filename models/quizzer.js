@@ -1,6 +1,6 @@
-import sequelize from "sequelize";
-import quizz_db from "../configs/database/dbConfig.js";
-import dbTables from "../configs/database/dbTables.js";
+const sequelize = require("sequelize");
+const quizz_db = require("../configs/database/dbConfig");
+const dbTables = require("../configs/database/dbTables");
 
 const Quizzer = quizz_db.define(
   "Quizzer",
@@ -71,4 +71,4 @@ const Quizzer = quizz_db.define(
     engine: "innoDB",
   }
 );
-export default Quizzer;
+module.exports = Quizzer;
