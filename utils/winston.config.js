@@ -1,8 +1,7 @@
-// import winston from "winston";
-import path from "path";
-import fs from "fs";
-import winston from "winston";
-import "winston-daily-rotate-file";
+const path = require("path");
+const fs = require("fs");
+const winston = require("winston");
+require("winston-daily-rotate-file");
 
 const levels = {
   error: 0,
@@ -12,8 +11,6 @@ const levels = {
   debug: 4,
 };
 // create logs folder if not presentin root
-import __dirname from "./root.path.js";
-
 (async () => {
   const logDir = path.join(__dirname, "../logs");
   const mainDir = path.join(__dirname, "../logs/main");
@@ -64,4 +61,4 @@ const winLogger = winston.createLogger({
   format,
   transports,
 });
-export default winLogger;
+module.exports = winLogger;

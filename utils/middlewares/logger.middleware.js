@@ -1,5 +1,5 @@
-import morgan from "morgan";
-import winLogger from "../winston.config.js";
+const morgan = require("morgan");
+const winLogger = require("../winston.config");
 
 const stream = {
   write: (message) => winLogger.http(message),
@@ -10,4 +10,4 @@ const logger = morgan(
   { stream }
 );
 
-export default logger;
+module.exports = logger;
