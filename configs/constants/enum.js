@@ -1,4 +1,4 @@
-const errorCodes = {
+exports.errorCodes = {
   SUCCESS: 200,
   CREATED: 201,
   NO_CONTENT: 204,
@@ -11,6 +11,8 @@ const errorCodes = {
   SERVER_ERR: 500,
 };
 
-module.exports = {
-  errorCodes,
+exports.errorNames = {
+  validation: "VALIDN_ERR",
+  db: "DB_ERR",
+  system: "SYSM_ERR",
 };

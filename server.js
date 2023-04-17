@@ -2,9 +2,9 @@
 const path = require("path");
 const dotenv = require("dotenv");
 if (process.env.NODE_ENV === "dev") {
-  dotenv.config({ path: path.join(__dirname, "dev.env") });
+  dotenv.config({ path: path.join(__dirname, ".env.dev") });
 } else {
-  dotenv.config({ path: path.join(__dirname, "prod.env") });
+  dotenv.config({ path: path.join(__dirname, ".env.prod") });
 }
 const app = require("./app");
 const quizz_db = require("./configs/database/dbConfig");

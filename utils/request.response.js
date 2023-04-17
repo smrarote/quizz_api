@@ -7,13 +7,15 @@ class AppError extends Error {
    * @param {String} message error message
    * @param {Number} statusCode response status code
    * @param {String} name name for the error
+   * @param {Object} error error body
    */
-  constructor(message, statusCode, name) {
+  constructor(message, statusCode, name, error) {
     super(message);
     this.name = name;
     this.success = false;
     this.statusCode = statusCode;
     this.status = `${statusCode}`.startsWith("4") ? "fail" : "error";
+    this.error = error;
     this.isOperational = true;
     Error.captureStackTrace(this, this.constructor);
   }
@@ -22,11 +24,13 @@ class AppError extends Error {
  * Error wrapper function generates Error Object
  * @param {String} msg error message
  * @param {Number} statusCode status code for response
- * @param {Express.NextFunction} next next function to throw error
+ * @param {name} name name for error
+ * @param {Object} error error body
  * @returns {Express.NextFunction} returns error handled by global error handler
  */
-exports.error = (msg, statusCode, next) => {
-  return next(new AppError(msg, statusCode));
+exports.error = (msg, statusCode, name, error, next) => {
+  console.log(new AppError(msg, statusCode, name, error));
+  return next(new AppError(msg, statusCode, name, error));
 };
 
 /**
