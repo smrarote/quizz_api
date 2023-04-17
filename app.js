@@ -16,9 +16,5 @@ app.use(express.json());
 app.use("/api/v1", routeMap);
 
 app.use(errorHandler);
-app.use("*", (req, res, next) => {
-  console.log("I will run ");
-  next();
-});
 
 module.exports = app;
