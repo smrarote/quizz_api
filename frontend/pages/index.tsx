@@ -22,28 +22,6 @@ export default function Home() {
 
       <div className="bg-white rounded-lg shadow-lg p-6">
         <h2 className="text-2xl text-gray-800 font-bold mb-6">{activeTab}</h2>
-        {/* <div className="flex mb-4">
-          <div
-            className={`flex-1 text-center py-2 ${
-              activeTab === "signin"
-                ? "bg-blue-500 text-white"
-                : "text-blue-500"
-            } cursor-pointer`}
-            onClick={() => handleTabChange("signin")}
-          >
-            Sign in
-          </div>
-          <div
-            className={`flex-1 text-center py-2 ${
-              activeTab === "signup"
-                ? "bg-blue-500 text-white"
-                : "text-blue-500"
-            } cursor-pointer`}
-            onClick={() => handleTabChange("signup")}
-          >
-            Sign up
-          </div>
-        </div> */}
         {activeTab === "SignIn" ? <SignIn /> : <SignUp />}
       </div>
     </div>
