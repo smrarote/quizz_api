@@ -30,6 +30,7 @@ class AppError extends Error {
  */
 exports.error = (msg, statusCode, name, error, next) => {
   console.log(new AppError(msg, statusCode, name, error));
+  console.log(next);
   return next(new AppError(msg, statusCode, name, error));
 };
 

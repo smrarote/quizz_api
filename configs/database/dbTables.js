@@ -1,3 +1,3 @@
 module.exports = {
-  QUIZZER_TABLE: "quizzer_profile",
+  QUIZZER_TABLE: "quizzer",
 };

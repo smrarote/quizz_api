@@ -4,7 +4,7 @@ const {
   winLogger,
   error,
   response,
-  errorCodes,
+  statusCodes,
   errorNames,
 } = require("../common.imports");
 const jwtAuth = require("../../services/auth/jwt");
@@ -12,28 +12,24 @@ const Roles = require("../../configs/constants/role.map");
 
 exports.signIn = catchAsync(async (req, res, next) => {
   const { username, password } = req.body;
-  // Quizzer.update(
-  //   { password: "Sambbhai@133" },
-  //   { where: { id: 45 }, individualHooks: true }
-  // );
   const user = await Quizzer.findOne({
     where: {
       email: username,
-      deletedAt: null, // dont't consider the deleted accounts
     },
+    paranoid: true,
   });
   // verify password
   if (!user?.passwordVerify(password)) {
     return error(
-      "login failed",
-      errorCodes.UNOTHORIZED,
-      errorNames.validation,
-      null,
+      `login failed : ${username}`,
+      statusCodes.UNAUTHORIZED,
+      errorNames.UNAUTHORIZED,
+      req.body,
       next
     );
   }
   // asign the auth token with user_id signin date
-  return response(res, errorCodes.SUCCESS, "login successfull", {
+  return response(res, statusCodes.SUCCESS, "login successfull", {
     token: new jwtAuth(Roles.QUIZZER).getToken({
       id: user.id,
       datetime: new Date(),
@@ -57,16 +53,16 @@ exports.signUp = catchAsync(async (req, res, next) => {
     return user.deletedAt
       ? error(
           `User Deleted with ${email}`,
-          errorCodes.UNOTHORIZED,
-          errorNames.validation,
-          JSON.stringify(user),
+          statusCodes.UNAUTHORIZED,
+          errorNames.VALIDATION,
+          user,
           next
         )
       : error(
           `User Exists with ${email}`,
-          errorCodes.CONFLICT,
-          errorNames.validation,
-          JSON.stringify(user),
+          statusCodes.CONFLICT,
+          errorNames.VALIDATION,
+          user,
           next
         );
   }
@@ -81,7 +77,7 @@ exports.signUp = catchAsync(async (req, res, next) => {
   });
 
   // send jwt token for the sign up
-  return response(res, errorCodes.SUCCESS, "new user created", {
+  return response(res, statusCodes.SUCCESS, "new user created", {
     first_name: user.first_name,
     email: user.email,
     createdAt: new Date(),
