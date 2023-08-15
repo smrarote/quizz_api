@@ -1,25 +1,26 @@
 const {
-  Quizzer,
+  User,
   catchAsync,
   winLogger,
   error,
   response,
   statusCodes,
   errorNames,
+  Op,
 } = require("../common.imports");
+const bcrypt = require("../../services/auth/bcrypt");
 const jwtAuth = require("../../services/auth/jwt");
 const Roles = require("../../configs/constants/role.map");
-
 exports.signIn = catchAsync(async (req, res, next) => {
   const { username, password } = req.body;
-  const user = await Quizzer.findOne({
+  const user = await User.findOne({
     where: {
-      email: username,
+      [Op.or]: [{ email: username }, { username: username }],
     },
-    paranoid: true,
+    attributes: ["first_name", "last_name", "username", "email", "password"],
   });
-  // verify password
-  if (!user?.passwordVerify(password)) {
+
+  if (!user || !bcrypt.compareHash(password, user?.password)) {
     return error(
       `login failed : ${username}`,
       statusCodes.UNAUTHORIZED,
@@ -28,58 +29,69 @@ exports.signIn = catchAsync(async (req, res, next) => {
       next
     );
   }
-  // asign the auth token with user_id signin date
-  return response(res, statusCodes.SUCCESS, "login successfull", {
-    token: new jwtAuth(Roles.QUIZZER).getToken({
-      id: user.id,
-      datetime: new Date(),
-    }),
+  // asign the auth token with user_id signin date\
+  winLogger.info(`user ${user.id} logged in ${new Date()}`);
+  return response(res, statusCodes.SUCCESS, `login success ${username}`, {
+    user: {
+      first_name: user?.first_name,
+      last_name: user?.last_name,
+      email: user?.email,
+      username: user?.username,
+    },
+    token: jwtAuth.getToken(
+      {
+        id: user.id,
+        role: Roles.USER,
+        datetime: new Date(),
+      },
+      process.env.JWTEXPIRY
+    ),
   });
 });
 
 exports.signUp = catchAsync(async (req, res, next) => {
-  const { first_name, last_name, display_name, password, email } = req.body;
+  const { first_name, last_name, username, password, email } = req.body;
 
   // check wether user alredy exist or deleted from system...
   let user = null;
-  user = await Quizzer.findOne({
+  user = await User.findOne({
     where: {
-      email: email,
+      [Op.or]: [{ email: email }, { username: username }],
     },
-    attributes: ["first_name", "email", "deletedAt"],
+    attributes: ["first_name", "email", "deleted_at"],
     paranoid: false, // feild to include the deleted records
   });
   if (user) {
-    return user.deletedAt
+    return user.deleted_at
       ? error(
           `User Deleted with ${email}`,
           statusCodes.UNAUTHORIZED,
           errorNames.VALIDATION,
-          user,
+          { first_name: user?.first_name, email: user?.email },
           next
         )
       : error(
           `User Exists with ${email}`,
           statusCodes.CONFLICT,
           errorNames.VALIDATION,
-          user,
+          { first_name: user?.first_name, email: user?.email },
           next
         );
   }
 
   // create new user ...
-  user = await Quizzer.create({
+  user = await User.create({
     first_name: first_name,
-    password: password,
+    password: bcrypt.createHash(password),
     email: email,
+    username: username,
     ...(Boolean(last_name) && { last_name: last_name }),
-    ...(Boolean(display_name) && { display_name: display_name }),
   });
 
   // send jwt token for the sign up
   return response(res, statusCodes.SUCCESS, "new user created", {
     first_name: user.first_name,
     email: user.email,
-    createdAt: new Date(),
+    created_at: new Date(),
   });
 });

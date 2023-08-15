@@ -1,4 +1,4 @@
-const { errorCodes, errorNames } = require("../../configs/constants/enum");
+const { statusCodes, errorNames } = require("../../configs/constants/enum");
 const { validationResult } = require("express-validator");
 const { error } = require("../request.response");
 
@@ -8,8 +8,8 @@ const validator = function (req, res, next) {
     return next(
       error(
         "validation error",
-        errorCodes.BAD_REQUEST,
-        errorNames.validation,
+        statusCodes.BAD_REQUEST,
+        errorNames.VALIDATION,
         validationerror.array(),
         next
       )

@@ -15,13 +15,21 @@ exports.signup = [
     .withMessage("last name is empty")
     .isAlpha()
     .withMessage("last name only characters allowed"),
-  body("display_name")
-    .if(body("display_name").exists())
+  body("mobile")
+    .if(body("mobile").exists())
     .trim()
     .notEmpty()
-    .withMessage("display name is empty")
-    .isAlpha()
-    .withMessage("display name only characters allowed"),
+    .withMessage("mobile no is empty")
+    .isMobilePhone(["en-US", "en-CA"], { strictMode: false })
+    .withMessage("invalid phone number"),
+  body("username")
+    .trim()
+    .notEmpty()
+    .withMessage("username name is empty")
+    .matches(/^(?=[A-Za-z0-9\-+_@#$*]{6,50}$)[A-Za-z0-9\-+_@#$*]+$/)
+    .withMessage(
+      "username only alphanumeric and (-,+,_,@,#,$,*,@) with 6-50 character length allowed"
+    ),
   body("email")
     .exists()
     .withMessage("email is require")

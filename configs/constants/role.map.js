@@ -1,4 +1,4 @@
 module.exports = {
-  VISITOR: "visitor",
-  QUIZZER: "quizzer",
+  USER: "user",
+  AUDIENCE: "audience",
 };
